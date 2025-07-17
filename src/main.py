@@ -1,8 +1,9 @@
 from pathlib import Path
+from typing import Annotated
 
 from fastapi import APIRouter, FastAPI
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, StringConstraints
 
 FRONTEND_DIR = Path(__file__).parent / "frontend"
 STATIC_FILES_DIR = Path(__file__).parent / "static"
@@ -20,7 +21,7 @@ class UserDetailsResponse(BaseModel):
     """User profile ID"""
     email: EmailStr
     """User email"""
-    username: str = Field(max_length=255)
+    username: Annotated[str, StringConstraints(max_length=255)]
     """Username"""
     registeredAt: str
     """User registration date"""
