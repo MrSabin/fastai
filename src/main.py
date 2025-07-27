@@ -3,6 +3,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
+from routers.sites import router as sites_router
 from routers.users import router as users_router
 
 FRONTEND_DIR = Path(__file__).parent / "frontend"
@@ -12,6 +13,7 @@ app = FastAPI()
 
 
 app.include_router(users_router, prefix="/frontend-api")
+app.include_router(sites_router, prefix="/frontend-api")
 
 
 app.mount(
