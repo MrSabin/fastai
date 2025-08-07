@@ -4,7 +4,7 @@ from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
 
-class SiteResponse(BaseModel):
+class Site(BaseModel):
     id: int
     """Site ID"""
     title: str
@@ -40,6 +40,11 @@ class SiteResponse(BaseModel):
             ],
         },
     )
+
+
+class Sites(BaseModel):
+    sites: list[Site]
+    """User generated sites list"""
 
 
 class CreateSiteRequest(BaseModel):

@@ -15,18 +15,20 @@ def mock_get_user():
 
 
 def mock_get_user_sites():
-    return [
-        {
-            "id": 0,
-            "title": "MySite",
-            "htmlCodeUrl": "https://dvmn.org/media/filer_public/d1/4b/d14bb4e8-d8b4-49cb-928d-fd04ecae46da/index.html",
-            "htmlCodeDownloadUrl": "",
-            "screenshotUrl": "",
-            "prompt": "MyPrompt",
-            "createdAt": "2025-06-15T18:29:56+00:00",
-            "updatedAt": "2025-06-15T18:29:56+00:00",
-        },
-    ]
+    return {
+        "sites": [
+            {
+                "id": 0,
+                "title": "MySite",
+                "htmlCodeUrl": "https://dvmn.org/media/filer_public/d1/4b/d14bb4e8-d8b4-49cb-928d-fd04ecae46da/index.html",
+                "htmlCodeDownloadUrl": "",
+                "screenshotUrl": "",
+                "prompt": "MyPrompt",
+                "createdAt": "2025-06-15T18:29:56+00:00",
+                "updatedAt": "2025-06-15T18:29:56+00:00",
+            },
+        ],
+    }
 
 
 def mock_create_site():

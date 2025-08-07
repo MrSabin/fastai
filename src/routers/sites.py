@@ -3,7 +3,7 @@ from fastapi.responses import StreamingResponse
 
 from src.dependencies import get_settings
 from src.mocks import mock_create_site, mock_get_user_sites, read_from_file
-from src.models.sites import CreateSiteRequest, SiteGenerationRequest, SiteResponse
+from src.models.sites import CreateSiteRequest, Site, SiteGenerationRequest, Sites
 from src.models.users import ErrorResponse
 
 router = APIRouter(prefix="/sites")
@@ -11,7 +11,7 @@ router = APIRouter(prefix="/sites")
 
 @router.get(
     "/my",
-    response_model=list[SiteResponse],
+    response_model=Sites,
     responses={
         200: {"description": "User generated sites"},
         401: {"model": ErrorResponse, "description": "User unauthorized"},
@@ -25,7 +25,7 @@ def get_user_sites(settings=Depends(get_settings)):
 
 @router.post(
     "/create",
-    response_model=SiteResponse,
+    response_model=Site,
     responses={
         200: {"description": "Site created succesfully"},
         401: {"model": ErrorResponse, "description": "User unauthorized"},
@@ -62,7 +62,7 @@ async def generate_site(
 
 @router.get(
     "/{site_id}",
-    response_model=SiteResponse,
+    response_model=Site,
 )
 def get_site(site_id: int, settings=Depends(get_settings)):
     if settings.USE_MOCKS:
