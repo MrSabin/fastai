@@ -8,8 +8,8 @@ def mock_get_user():
         "profileId": 0,
         "email": "user@example.com",
         "username": "JohnDoe",
-        "registeredAt": "string",
-        "updatedAt": "string",
+        "registeredAt": "2025-06-15T18:29:56+00:00",
+        "updatedAt": "2025-06-15T18:29:56+00:00",
         "isActive": True,
     }
 
@@ -23,8 +23,8 @@ def mock_get_user_sites():
             "htmlCodeDownloadUrl": "",
             "screenshotUrl": "",
             "prompt": "MyPrompt",
-            "createdAt": "string",
-            "updatedAt": "string",
+            "createdAt": "2025-06-15T18:29:56+00:00",
+            "updatedAt": "2025-06-15T18:29:56+00:00",
         },
     ]
 

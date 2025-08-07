@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
@@ -15,9 +17,9 @@ class SiteResponse(BaseModel):
     """Site screenshot URL"""
     prompt: str
     """Prompt used for generate site"""
-    created_at: str
+    created_at: datetime
     """Site creation timestamp"""
-    updated_at: str
+    updated_at: datetime
     """Site last update timestamp"""
 
     model_config = ConfigDict(

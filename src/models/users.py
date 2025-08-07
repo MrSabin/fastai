@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Annotated
 
 from pydantic import BaseModel, EmailStr, StringConstraints
@@ -14,9 +15,9 @@ class UserDetailsResponse(BaseModel):
     """User email"""
     username: Annotated[str, StringConstraints(max_length=255)]
     """Username"""
-    registeredAt: str
+    registeredAt: datetime
     """User registration date"""
-    updatedAt: str
+    updatedAt: datetime
     """Last profile update"""
     isActive: bool
     """Is active user"""
