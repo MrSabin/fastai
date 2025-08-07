@@ -1,10 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
 
-from config import settings
-from mocks import mock_create_site, mock_get_user_sites, read_from_file
-from models.sites import CreateSiteRequest, SiteGenerationRequest, SiteResponse
-from models.users import ErrorResponse
+from src.dependencies import get_settings
+from src.mocks import mock_create_site, mock_get_user_sites, read_from_file
+from src.models.sites import CreateSiteRequest, SiteGenerationRequest, SiteResponse
+from src.models.users import ErrorResponse
 
 router = APIRouter(prefix="/sites")
 
@@ -16,7 +16,7 @@ router = APIRouter(prefix="/sites")
         200: {"description": "User generated sites"},
         401: {"model": ErrorResponse, "description": "User unauthorized"},
     })
-def get_user_sites():
+def get_user_sites(settings=Depends(get_settings)):
     if settings.USE_MOCKS:
         response = mock_get_user_sites()
         return response
@@ -31,7 +31,7 @@ def get_user_sites():
         401: {"model": ErrorResponse, "description": "User unauthorized"},
     },
 )
-def create_site(request: CreateSiteRequest):
+def create_site(request: CreateSiteRequest, settings=Depends(get_settings)):
     if settings.USE_MOCKS:
         response = mock_create_site()
         return response
@@ -47,7 +47,11 @@ def create_site(request: CreateSiteRequest):
         },
     },
 )
-async def generate_site(site_id: int, request: SiteGenerationRequest | None = None):
+async def generate_site(
+        site_id: int,
+        request: SiteGenerationRequest | None = None,
+        settings=Depends(get_settings),
+):
     if settings.USE_MOCKS:
         return StreamingResponse(
             read_from_file(),
@@ -60,7 +64,7 @@ async def generate_site(site_id: int, request: SiteGenerationRequest | None = No
     "/{site_id}",
     response_model=SiteResponse,
 )
-def get_site(site_id: int):
+def get_site(site_id: int, settings=Depends(get_settings)):
     if settings.USE_MOCKS:
         response = mock_create_site()
         return response
