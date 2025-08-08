@@ -1,6 +1,18 @@
 import asyncio
+from functools import wraps
 
 import aiofiles
+
+
+def mockable(mock_view):
+    def decorator(view):
+        @wraps(view)
+        async def wrapper(*args, **kwargs):
+            if kwargs["settings"].USE_MOCKS:
+                return mock_view()
+            return await view(*args, **kwargs)
+        return wrapper
+    return decorator
 
 
 def mock_get_user():

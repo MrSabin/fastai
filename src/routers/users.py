@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
 
+from src.config import Settings
 from src.dependencies import get_settings
-from src.mocks import mock_get_user
+from src.mocks import mock_get_user, mockable
 from src.models.users import ErrorResponse, UserDetailsResponse
 
 router = APIRouter(prefix="/users")
@@ -14,8 +15,6 @@ router = APIRouter(prefix="/users")
         200: {"description": "User details"},
         401: {"model": ErrorResponse, "description": "User unauthorized"},
     })
-def get_user(settings=Depends(get_settings)):
-    if settings.USE_MOCKS:
-        response = mock_get_user()
-        return response
+@mockable(mock_get_user)
+async def get_user(settings: Settings = Depends(get_settings)):
     raise NotImplementedError("Real user implementation not provided")

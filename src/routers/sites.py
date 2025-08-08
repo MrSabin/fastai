@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
 
+from src.config import Settings
 from src.dependencies import get_settings
-from src.mocks import mock_create_site, mock_get_user_sites, read_from_file
+from src.mocks import mock_create_site, mock_get_user_sites, mockable, read_from_file
 from src.models.sites import CreateSiteRequest, Site, SiteGenerationRequest, Sites
 from src.models.users import ErrorResponse
 
@@ -16,10 +17,8 @@ router = APIRouter(prefix="/sites")
         200: {"description": "User generated sites"},
         401: {"model": ErrorResponse, "description": "User unauthorized"},
     })
-def get_user_sites(settings=Depends(get_settings)):
-    if settings.USE_MOCKS:
-        response = mock_get_user_sites()
-        return response
+@mockable(mock_get_user_sites)
+async def get_user_sites(settings: Settings = Depends(get_settings)):
     raise NotImplementedError("Real sites implementation not provided")
 
 
@@ -31,10 +30,8 @@ def get_user_sites(settings=Depends(get_settings)):
         401: {"model": ErrorResponse, "description": "User unauthorized"},
     },
 )
-def create_site(request: CreateSiteRequest, settings=Depends(get_settings)):
-    if settings.USE_MOCKS:
-        response = mock_create_site()
-        return response
+@mockable(mock_create_site)
+async def create_site(request: CreateSiteRequest, settings: Settings = Depends(get_settings)):
     raise NotImplementedError("Real sites implementation not provided")
 
 
@@ -48,9 +45,9 @@ def create_site(request: CreateSiteRequest, settings=Depends(get_settings)):
     },
 )
 async def generate_site(
-        site_id: int,
-        request: SiteGenerationRequest | None = None,
-        settings=Depends(get_settings),
+    site_id: int,
+    request: SiteGenerationRequest | None = None,
+    settings: Settings = Depends(get_settings),
 ):
     if settings.USE_MOCKS:
         return StreamingResponse(
@@ -64,8 +61,6 @@ async def generate_site(
     "/{site_id}",
     response_model=Site,
 )
-def get_site(site_id: int, settings=Depends(get_settings)):
-    if settings.USE_MOCKS:
-        response = mock_create_site()
-        return response
+@mockable(mock_create_site)
+async def get_site(site_id: int, settings: Settings = Depends(get_settings)):
     raise NotImplementedError("Not yet...")
