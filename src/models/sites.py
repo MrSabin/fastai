@@ -54,6 +54,7 @@ class CreateSiteRequest(BaseModel):
     """Prompt for generate site"""
 
     model_config = ConfigDict(
+        extra="forbid",
         json_schema_extra={
             "examples": [
                 {
@@ -70,6 +71,7 @@ class SiteGenerationRequest(BaseModel):
     """Prompt for generate site"""
 
     model_config = ConfigDict(
+        extra="forbid",
         json_schema_extra={
             "examples": [
                 {
