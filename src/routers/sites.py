@@ -1,3 +1,4 @@
+from anyio import CancelScope
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
 from html_page_generator import AsyncPageGenerator
@@ -55,10 +56,16 @@ async def generate_site(
             read_from_file(),
             media_type="text/plain",
         )
-    generator = AsyncPageGenerator()
+    generator = AsyncPageGenerator(debug_mode=settings.DEEPSEEK.DEBUG_MODE)
     user_prompt = request.prompt
+
+    async def generate_content():
+        with CancelScope(shield=True):
+            async for chunk in generator(user_prompt):
+                yield chunk
+
     return StreamingResponse(
-        generator(user_prompt),
+        generate_content(),
         media_type="text/plain",
     )
 
