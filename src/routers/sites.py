@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
+from html_page_generator import AsyncPageGenerator
 
 from src.config import Settings
 from src.dependencies import get_settings
@@ -46,15 +47,20 @@ async def create_site(request: CreateSiteRequest, settings: Settings = Depends(g
 )
 async def generate_site(
     site_id: int,
-    request: SiteGenerationRequest | None = None,
+    request: SiteGenerationRequest,
     settings: Settings = Depends(get_settings),
 ):
     if settings.USE_MOCKS:
         return StreamingResponse(
             read_from_file(),
-            media_type="text/csv",
+            media_type="text/plain",
         )
-    raise NotImplementedError("Real site generation not implemented")
+    generator = AsyncPageGenerator()
+    user_prompt = request.prompt
+    return StreamingResponse(
+        generator(user_prompt),
+        media_type="text/plain",
+    )
 
 
 @router.get(
