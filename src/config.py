@@ -8,6 +8,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class DeepSeekSettings(BaseSettings):
     API_KEY: SecretStr
     MAX_CONNECTIONS: Annotated[int, Field(gt=0)] = 5
+    BASE_URL: str
 
 
 class UnsplashSettings(BaseSettings):
