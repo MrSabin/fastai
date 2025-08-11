@@ -17,8 +17,8 @@ class UnsplashSettings(BaseSettings):
 
 
 class Settings(BaseSettings):
-    DS: DeepSeekSettings
-    US: UnsplashSettings
+    DEEPSEEK: DeepSeekSettings
+    UNSPLASH: UnsplashSettings
     USE_MOCKS: bool = False
 
     model_config = SettingsConfigDict(
