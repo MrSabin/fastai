@@ -9,6 +9,7 @@ class DeepSeekSettings(BaseSettings):
     API_KEY: SecretStr
     MAX_CONNECTIONS: Annotated[int, Field(gt=0)] = 5
     BASE_URL: str
+    DEBUG_MODE: bool = False
 
 
 class UnsplashSettings(BaseSettings):
