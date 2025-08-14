@@ -37,6 +37,39 @@ make:
 
 Все дальнейшие команды запускать из-под **git bash**.
 
+#### Локальный сервер minio
+
+Для хранения сгенерированных сайтов и изображений необходимо установить локальный сервер **minio** и клиент для настройки и управления **mc**. Инструкции по установке:
+
+- [minio](https://github.com/minio/minio)
+- [mc](https://docs.min.io/community/minio-object-store/reference/minio-mc.html#install-mc)
+
+После установки запускаем сервер:
+
+```shell
+$ ./minio server /<Директория для хранилища minio>
+MinIO Object Storage Server
+Copyright: 2015-2025 MinIO, Inc.
+License: GNU AGPLv3 - https://www.gnu.org/licenses/agpl-3.0.html
+Version: RELEASE.2025-07-23T15-54-02Z (go1.24.5 linux/amd64)
+
+API: http://192.168.31.23:9000  http://192.168.31.20:9000  http://172.17.0.1:9000  http://172.18.0.1:9000  http://172.19.0.1:9000  http://127.0.0.1:9000
+   RootUser: minioadmin
+   RootPass: minioadmin
+
+WebUI: http://192.168.31.23:42067 http://192.168.31.20:42067 http://172.17.0.1:42067 http://172.18.0.1:42067 http://172.19.0.1:42067 http://127.0.0.1:42067
+   RootUser: minioadmin
+   RootPass: minioadmin
+<...>
+```
+
+Заходим в веб-интерфейс по адресу, который выдаст сервер, в данном случае **http://127.0.0.1:42067** и создаем бакет. Бакет по умолчанию создается типа **Private**, чтобы сделать его публичным нужно зарегистрировать алиас для нашего сервера используя один из адресов API в **mc** и изменить права доступа:
+
+```shell
+$ mc alias set 'myminio' 'http://192.168.31.23:9000' 'minioadmin' 'minioadmin'
+$ mc anonymous set public myminio/<Название бакета>
+```
+
 ### Настройка pre-commit хуков
 
 В репозитории используются хуки pre-commit, чтобы автоматически запускать линтеры и автотесты. Перед началом разработки
