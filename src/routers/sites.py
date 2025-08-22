@@ -9,8 +9,8 @@ from pydantic.alias_generators import to_camel as convert_to_camel
 
 from src.config import Settings
 from src.dependencies import get_settings
+from src.exceptions import ErrorResponse
 from src.mocks import mock_create_site, mock_get_user_sites, mockable, read_from_file
-from src.models.users import ErrorResponse
 
 router = APIRouter(prefix="/sites")
 
